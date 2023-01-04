@@ -18,8 +18,8 @@ jira = JIRA(server="http://192.168.3.56:8089", basic_auth=('thuandd', 'Biplus@20
 
 # Get all projects viewable by anonymous users.
 projects = jira.projects()
-# print(dir(projects[0]))
-print(projects[0].raw)
+print(dir(projects[0]))
+# print(projects[0].raw)
 boards = jira.boards()
 # print(boards)
 
