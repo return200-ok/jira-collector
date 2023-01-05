@@ -8,13 +8,6 @@ from jira import JIRA
 # (see https://developer.atlassian.com/display/DOCS/Installing+the+Atlassian+Plugin+SDK for details).
 jira = JIRA(server="http://192.168.3.56:8089", basic_auth=('thuandd', 'Biplus@2021'))
 
-# Some Authentication Methods
-# jira = JIRA(
-#     basic_auth=("thuandd", "Biplus@2021"),  # a username/password tuple [Not recommended]
-#     # basic_auth=("email", "API token"),  # Jira Cloud: a username/token tuple
-#     # token_auth="API token",  # Self-Hosted Jira (e.g. Server): the PAT token
-#     # auth=("admin", "admin"),  # a username/password tuple for cookie auth [Not recommended]
-# )
 
 # Get all projects viewable by anonymous users.
 projects = jira.projects()
@@ -26,38 +19,5 @@ boards = jira.boards()
 # # Sort available project keys, then return the second, third, and fourth keys.
 # keys = sorted(project.key for project in projects)[2:5]
 
-# # Get an issue.
-# issue = jira.issue("JRA-1330")
-# # Find all comments made by Atlassians on this issue.
-# atl_comments = [
-#     comment
-#     for comment in issue.fields.comment.comments
-#     if re.search(r"@atlassian.com$", comment.author.key)
-# ]
 
-# # Add a comment to the issue.
-# jira.add_comment(issue, "Comment text")
 
-# # Change the issue's summary and description.
-# issue.update(
-#     summary="I'm different!", description="Changed the summary to be different."
-# )
-
-# # Change the issue without sending updates
-# issue.update(notify=False, description="Quiet summary update.")
-
-# # You can update the entire labels field like this
-# issue.update(fields={"labels": ["AAA", "BBB"]})
-
-# # Or modify the List of existing labels. The new label is unicode with no
-# # spaces
-# issue.fields.labels.append("new_text")
-# issue.update(fields={"labels": issue.fields.labels})
-
-# # Send the issue away for good.
-# issue.delete()
-
-# # Linking a remote jira issue (needs applinks to be configured to work)
-# issue = jira.issue("JRA-1330")
-# issue2 = jira.issue("XX-23")  # could also be another instance
-# jira.add_remote_link(issue.id, issue2)
