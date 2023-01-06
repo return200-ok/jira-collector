@@ -11,13 +11,13 @@ jira = JIRA(server="http://192.168.3.56:8089", basic_auth=('thuandd', 'Biplus@20
 
 # Get all projects viewable by anonymous users.
 projects = jira.projects()
-print(dir(projects[0]))
+# print(dir(projects[0]))
 # print(projects[0].raw)
 boards = jira.boards()
 # print(boards)
 
 # # Sort available project keys, then return the second, third, and fourth keys.
-# keys = sorted(project.key for project in projects)[2:5]
+keys = sorted(project.key for project in projects)[2:5]
 
-
+print(keys)
 
