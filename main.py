@@ -5,7 +5,7 @@ import re
 from jira import JIRA
 
 # By default, the client will connect to a Jira instance started from the Atlassian Plugin SDK
-# (see https://developer.atlassian.com/display/DOCS/Installing+the+Atlassian+Plugin+SDK for details).
+
 jira = JIRA(server="http://192.168.3.56:8089", basic_auth=('thuandd', 'Biplus@2021'))
 
 
