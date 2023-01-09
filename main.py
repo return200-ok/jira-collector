@@ -6,7 +6,7 @@ from jira import JIRA
 
 # By default, the client will connect to a Jira instance started from the Atlassian Plugin SDK
 
-# jira = JIRA(server="http://192.168.3.56:8089", basic_auth=('thuandd', 'Biplus@2021'))
+jira = JIRA(server="http://192.168.3.56:8089", basic_auth=('thuandd', 'Biplus@2021'))
 
 
 # Get all projects viewable by anonymous users.
@@ -17,7 +17,7 @@ boards = jira.boards()
 # print(boards)
 
 # # Sort available project keys, then return the second, third, and fourth keys.
-keys = sorted(project.key for project in projects)[2:5]
+keys = sorted(project.key for project in projects)
 
 print(keys)
 
