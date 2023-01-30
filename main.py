@@ -1,23 +1,34 @@
-# This script shows how to use the client in anonymous mode
-# against jira.atlassian.com.
-import re
+#!/usr/bin/python
+import os
 
-from jira import JIRA
+from dotenv import load_dotenv
+from influx_client import InfluxClient
+from jira_client import JiraClient
+from jira_collector import collector
 
-# By default, the client will connect to a Jira instance started from the Atlassian Plugin SDK
+'''
+    Load env
+'''
+load_dotenv()
+jira_url = os.getenv('JIRA_URL')
+jira_user = os.getenv('JIRA_USER')
+jira_password = os.getenv('JIRA_PASSWORD')
 
-jira = JIRA(server="http://192.168.3.56:8089", basic_auth=('thuandd', 'Biplus@2021'))
+influx_token = os.getenv('INFLUX_TOKEN')
+influx_server = os.getenv('INFLUX_DB')
+org_name = os.getenv('INFLUX_ORG')
+bucket_name = os.getenv('BUCKET_NAME')
+logPath = os.getenv('COLLECTOR_LOG_PATH')
+
+def main():
+    jira_client = JiraClient(
+        jira_url, jira_user, jira_password
+    )
+    influx_client = InfluxClient(
+        influx_server, influx_token, org_name, bucket_name
+    )
+    collector(jira_client, influx_client)
 
 
-# Get all projects viewable by anonymous users.
-projects = jira.projects()
-# print(dir(projects[0]))
-# print(projects[0].raw)
-boards = jira.boards()
-# print(boards)
-
-# # Sort available project keys, then return the second, third, and fourth keys.
-keys = sorted(project.key for project in projects)
-
-print(keys)
-
+if __name__ == "__main__":
+    main()
