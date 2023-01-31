@@ -106,9 +106,3 @@ class JiraClient:
             if i >= chunk.total:
                 break
         return issues
-# issues = get_all_issues(jira, 'CAOL', '27')
-# print(issues[0].fields.status.name)
-        # print ('ticket-no=',issue)
-        # print ('IssueType=',issue.fields.issuetype.name)
-        # print ('Status=',issue.fields.status.name)
-        # print ('Summary=',issue.fields.summary)
