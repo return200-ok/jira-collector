@@ -98,7 +98,7 @@ class JiraClient:
         """
         issues = []
         i = 0
-        chunk_size = 100
+        chunk_size = 200
         while True:
             chunk = self.get_server_instance().search_issues(f'Sprint = {sprint_id}', startAt=i, maxResults=chunk_size)
             i += chunk_size
