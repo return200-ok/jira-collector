@@ -1,7 +1,7 @@
 FROM python:3.8-slim
 
 RUN apt-get update && apt-get -y install cron vim
-WORKDIR /jira_collector/
+WORKDIR /jira_influx_collector/
 COPY . .
 COPY crontab /etc/cron.d/crontab
 RUN chmod 0644 /etc/cron.d/crontab
