@@ -1,10 +1,33 @@
 import logging
 
-# import jira_client
 from influx_client import InfluxPoint
 
 logger = logging.getLogger(__name__)
+
 class IssueInfo:
+    """
+    The constructor for the class Issue. It takes in the following parameters:
+    board_id, project_id, sprint_id, issue_key, issue_id, issue_assignee, issue_created, issue_creator,
+    issue_duedate, issue_type, issue_reporter, issue_status, issue_summary, issue_timeestimate,
+    issue_timespent, issue_worklog
+    
+    :param board_id: The ID of the board that the issue is on
+    :param project_id: The ID of the project that the issue belongs to
+    :param sprint_id: The ID of the sprint
+    :param issue_key: The issue key, e.g. "TEST-1"
+    :param issue_id: The unique ID of the issue
+    :param issue_assignee: The user to whom the issue is assigned
+    :param issue_created: The date the issue was created
+    :param issue_creator: The user who created the issue
+    :param issue_duedate: The date the issue is due
+    :param issue_type: The type of issue (e.g. Story, Bug, etc.)
+    :param issue_reporter: The user who reported the issue
+    :param issue_status: The status of the issue
+    :param issue_summary: The summary of the issue
+    :param issue_timeestimate: The time estimate in seconds
+    :param issue_timespent: The time spent on the issue in seconds
+    :param issue_worklog: a list of worklogs for the issue
+    """
     def __init__(self, board_id, project_id, sprint_id, issue_key, issue_id, issue_assignee, 
     issue_created, issue_creator, issue_duedate, issue_type, issue_reporter, issue_status, 
     issue_summary, issue_timeestimate, issue_timespent, issue_worklog):
@@ -26,6 +49,15 @@ class IssueInfo:
         self.issue_worklog = issue_worklog
 
 def gen_data(issue, board_id, sprint_id):
+    """
+    It takes in an issue, a board id, and a sprint id, and returns an IssueInfo object with all the
+    relevant information about the issue
+    
+    :param issue: the issue object
+    :param board_id: The ID of the board that the issue is on
+    :param sprint_id: The ID of the sprint
+    :return: A list of IssueInfo objects
+    """
 
     project_id = ''
     if hasattr(issue.fields, 'project'):
@@ -97,6 +129,12 @@ def gen_data(issue, board_id, sprint_id):
     return data
 
 def gen_datapoint(data):
+    """
+    It takes a dataframe row as input, and returns a data point in the format that InfluxDB expects
+    
+    :param data: the data object that we created in the previous step
+    :return: A dictionary
+    """
     measurement = 'jira'
     tags = {
         "board_id": data.board_id,
@@ -123,6 +161,13 @@ def gen_datapoint(data):
     return data_point
 
 def push_data(data, influx_client):  
+    """
+    It takes a dataframe and an InfluxDB client as input, and writes the dataframe to the InfluxDB
+    client
+    
+    :param data: This is the data that you want to push to InfluxDB
+    :param influx_client: The InfluxDB client object
+    """
     data_point = gen_datapoint(data)
     try:
         influx_client.write_data(data_point)
@@ -132,6 +177,13 @@ def push_data(data, influx_client):
         raise e
 
 def collector(jira_client, influx_client):
+    """
+    For each board, get all the sprints, get all the issues in each sprint, and push the data to
+    InfluxDB
+    
+    :param jira_client: the Jira client object
+    :param influx_client: the client object that we created in the previous step
+    """
     list_board = jira_client.get_boards()
     for board in list_board:
         board_type = board.type
