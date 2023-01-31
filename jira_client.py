@@ -87,7 +87,7 @@ class JiraClient:
         status = self.get_server_instance().status(resource_id)
         return status
 
-    def get_all_issues(self, project_name, sprint_id):
+    def get_all_issues(self, sprint_id):
         """
         It gets all the issues in a sprint by using the Jira search API to get 100 issues at a time, and
         then iterating through the results until it has all the issues
@@ -100,7 +100,7 @@ class JiraClient:
         i = 0
         chunk_size = 100
         while True:
-            chunk = self.get_server_instance().search_issues(f'project = {project_name} AND Sprint = {sprint_id}', startAt=i, maxResults=chunk_size)
+            chunk = self.get_server_instance().search_issues(f'Sprint = {sprint_id}', startAt=i, maxResults=chunk_size)
             i += chunk_size
             issues += chunk.iterable
             if i >= chunk.total:
