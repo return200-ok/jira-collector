@@ -1,0 +1,9 @@
+version: '3'
+services:
+  sonarqube-exporter:
+    image: "return200/jira-influx-collector:0.1.0"
+    env_file:
+      - "${PROD_ENV}"
+    volumes:
+      - "/tmp:/tmp"
+

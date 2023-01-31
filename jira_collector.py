@@ -25,10 +25,6 @@ class IssueInfo:
         self.issue_timespent = issue_timespent
         self.issue_worklog = issue_worklog
 
-# def check_attr(a):
-#     if hasattr(a, 'property'):
-#         a.property
-
 def gen_data(issue, board, sprint):
 
     project_id = ''
@@ -139,35 +135,13 @@ def push_data(data, influx_client):
 def collector(jira_client, influx_client):
     list_board = jira_client.get_boards()
     for board in list_board:
-        # print(board.type)
         if (board.type == 'kanban'):
             break
         else:
-            # print('board:',board.id)
             list_sprint = jira_client.get_sprints(board.id)
             for sprint in list_sprint:
-                # print('     sprint:',sprint.id)
                 list_issue = jira_client.get_all_issues(sprint.id)
-                # print(list_issue)
                 for issue in list_issue:
                     data = gen_data(issue, board, sprint)
-                    # print(data)
                     push_data(data, influx_client)
 
-    # list_project = jira_client.get_projects()
-    # for project in list_project:
-    #     print(project.projectTypeKey)
-
-
-
-
-
-
-        # list_project = jira_client.get_list_build(job)
-        # try:
-        #     for build in list_build:
-        #         build_info = jira_client.build_info(job, build)
-        #         data = gen_build_data(build_info, job, build)
-        #         push_data(data, influx_client)
-        # except TypeError:
-        #     logging.info("Job {} has no build data, {}  is not iterable".format(job, list_build))
