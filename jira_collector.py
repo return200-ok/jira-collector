@@ -1,6 +1,6 @@
 import logging
 
-import jira_client
+# import jira_client
 from influx_client import InfluxPoint
 
 logger = logging.getLogger(__name__)
@@ -25,7 +25,7 @@ class IssueInfo:
         self.issue_timespent = issue_timespent
         self.issue_worklog = issue_worklog
 
-def gen_data(issue, board, sprint):
+def gen_data(issue, board_id, sprint_id):
 
     project_id = ''
     if hasattr(issue.fields, 'project'):
@@ -76,9 +76,9 @@ def gen_data(issue, board, sprint):
         issue_worklog = issue.fields.worklog.total
     
     data = IssueInfo(
-        board.id,
+        board_id,
         project_id,
-        sprint.id,
+        sprint_id,
         issue.key,
         issue.id,
         issue_assignee,
@@ -105,20 +105,19 @@ def gen_datapoint(data):
         "issue_id": data.issue_id,
         "issue_key": data.issue_key,
         "summary": data.issue_summary,
+        "assignee": data.issue_assignee,
+        "creator": data.issue_creator,
+        "reporter": data.issue_reporter,
+        "issuetype": data.issue_type,
 
         }
     timestamp = data.issue_created
     fields = {
-        "assignee": data.issue_assignee,
-        "creator": data.issue_creator,
         "duedate": data.issue_duedate,
-        "issuetype": data.issue_type ,
-        "reporter": data.issue_reporter ,
-        "status": data.issue_status ,
-        "timeestimate": data.issue_timeestimate ,
-        "timespent": data.issue_timespent ,
+        "status": data.issue_status,
+        "timeestimate": data.issue_timeestimate,
+        "timespent": data.issue_timespent,
         "worklog": data.issue_worklog
-
         }
     data_point = InfluxPoint(measurement, tags, fields, timestamp)._point
     return data_point
@@ -135,13 +134,16 @@ def push_data(data, influx_client):
 def collector(jira_client, influx_client):
     list_board = jira_client.get_boards()
     for board in list_board:
-        if (board.type == 'kanban'):
-            break
+        board_type = board.type
+        board_id = board.id
+        if (board_type == 'kanban'):
+            continue
         else:
-            list_sprint = jira_client.get_sprints(board.id)
+            list_sprint = jira_client.get_sprints(board_id)
             for sprint in list_sprint:
+                sprint_id = sprint.id
                 list_issue = jira_client.get_all_issues(sprint.id)
                 for issue in list_issue:
-                    data = gen_data(issue, board, sprint)
+                    data = gen_data(issue, board_id, sprint_id)
                     push_data(data, influx_client)
 
