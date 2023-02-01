@@ -68,7 +68,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1675235365483,
+  "iteration": 1675235365486,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -642,7 +642,8 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "continuous-greens"
+            "fixedColor": "dark-green",
+            "mode": "fixed"
           },
           "mappings": [],
           "thresholds": {
@@ -751,9 +752,9 @@
       },
       "id": 15,
       "options": {
-        "displayMode": "basic",
-        "minVizHeight": 10,
-        "minVizWidth": 0,
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -762,7 +763,7 @@
           "fields": "",
           "values": false
         },
-        "showUnfilled": true
+        "textMode": "auto"
       },
       "pluginVersion": "9.0.1",
       "targets": [
@@ -776,7 +777,7 @@
         }
       ],
       "title": "Workload / Project",
-      "type": "bargauge"
+      "type": "stat"
     },
     {
       "datasource": {
@@ -810,9 +811,9 @@
       },
       "id": 16,
       "options": {
-        "displayMode": "basic",
-        "minVizHeight": 10,
-        "minVizWidth": 0,
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -821,7 +822,7 @@
           "fields": "",
           "values": false
         },
-        "showUnfilled": true
+        "textMode": "auto"
       },
       "pluginVersion": "9.0.1",
       "targets": [
@@ -846,7 +847,7 @@
           }
         }
       ],
-      "type": "bargauge"
+      "type": "stat"
     },
     {
       "datasource": {
@@ -894,9 +895,9 @@
       },
       "id": 17,
       "options": {
-        "displayMode": "basic",
-        "minVizHeight": 10,
-        "minVizWidth": 0,
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -905,7 +906,7 @@
           "fields": "",
           "values": false
         },
-        "showUnfilled": true
+        "textMode": "auto"
       },
       "pluginVersion": "9.0.1",
       "targets": [
@@ -931,7 +932,7 @@
           }
         }
       ],
-      "type": "bargauge"
+      "type": "stat"
     }
   ],
   "refresh": "",
@@ -1010,6 +1011,6 @@
   "timezone": "",
   "title": "Jira Sprint Summary",
   "uid": "2d-Z_704k",
-  "version": 21,
+  "version": 22,
   "weekStart": ""
 }
