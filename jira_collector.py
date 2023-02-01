@@ -28,10 +28,11 @@ class IssueInfo:
     :param issue_timespent: The time spent on the issue in seconds
     :param issue_worklog: a list of worklogs for the issue
     """
-    def __init__(self, board_id, project_id, sprint_id, issue_key, issue_id, issue_assignee, 
+    def __init__(self, board_id, board_name, project_id, sprint_id, issue_key, issue_id, issue_assignee, 
     issue_created, issue_creator, issue_duedate, issue_type, issue_reporter, issue_status, 
     issue_summary, issue_timeestimate, issue_timespent, issue_worklog):
         self.board_id = board_id
+        self.board_name = board_name
         self.project_id = project_id
         self.sprint_id = sprint_id
         self.issue_key = issue_key
@@ -48,7 +49,7 @@ class IssueInfo:
         self.issue_timespent = issue_timespent
         self.issue_worklog = issue_worklog
 
-def gen_data(issue, board_id, sprint_id):
+def gen_data(issue, board, sprint_id):
     """
     It takes in an issue, a board id, and a sprint id, and returns an IssueInfo object with all the
     relevant information about the issue
@@ -108,7 +109,8 @@ def gen_data(issue, board_id, sprint_id):
         issue_worklog = issue.fields.worklog.total
     
     data = IssueInfo(
-        board_id,
+        board.id,
+        board.name,
         project_id,
         sprint_id,
         issue.key,
@@ -138,6 +140,7 @@ def gen_datapoint(data):
     measurement = 'jira'
     tags = {
         "board_id": data.board_id,
+        "board_name": data.board_name,
         "sprint_id": data.sprint_id,
         "project_key": data.project_id,
         "issue_id": data.issue_id,
@@ -196,6 +199,6 @@ def collector(jira_client, influx_client):
                 sprint_id = sprint.id
                 list_issue = jira_client.get_all_issues(sprint.id)
                 for issue in list_issue:
-                    data = gen_data(issue, board_id, sprint_id)
+                    data = gen_data(issue, board, sprint_id)
                     push_data(data, influx_client)
 
