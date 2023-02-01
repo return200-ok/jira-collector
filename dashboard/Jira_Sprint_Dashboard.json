@@ -68,7 +68,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1675157012809,
+  "iteration": 1675235365483,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -470,16 +470,19 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
+            "fixedColor": "dark-blue",
+            "mode": "fixed"
           },
           "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
           "unit": "s"
         },
         "overrides": [
@@ -505,15 +508,10 @@
       },
       "id": 9,
       "options": {
-        "displayLabels": [
-          "percent"
-        ],
-        "legend": {
-          "displayMode": "list",
-          "placement": "right",
-          "values": []
-        },
-        "pieType": "pie",
+        "displayMode": "basic",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -521,10 +519,7 @@
           "fields": "",
           "values": false
         },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
+        "showUnfilled": true
       },
       "pluginVersion": "9.0.1",
       "targets": [
@@ -537,7 +532,7 @@
           "refId": "A"
         }
       ],
-      "title": "Workload per User",
+      "title": "Workload / User",
       "transformations": [
         {
           "id": "labelsToFields",
@@ -549,7 +544,7 @@
           }
         }
       ],
-      "type": "piechart"
+      "type": "bargauge"
     },
     {
       "datasource": {
@@ -625,7 +620,7 @@
           "refId": "A"
         }
       ],
-      "title": "Task per User",
+      "title": "Task / User",
       "transformations": [
         {
           "id": "labelsToFields",
@@ -661,7 +656,20 @@
           },
           "unit": "h"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "_value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Unassigned"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 6,
@@ -695,7 +703,222 @@
           "refId": "A"
         }
       ],
-      "title": "Worklog per User",
+      "title": "Worklog / User",
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {
+            "keepLabels": [
+              "assignee"
+            ],
+            "mode": "columns",
+            "valueLabel": "assignee"
+          }
+        }
+      ],
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "dark-blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 16
+      },
+      "id": 15,
+      "options": {
+        "displayMode": "basic",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true
+      },
+      "pluginVersion": "9.0.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket: \"jira\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"jira\")\n  |> filter(fn: (r) => r[\"board_id\"] == \"${board_id}\")\n  |> filter(fn: (r) => r[\"sprint_id\"] == \"${sprint_id}\")\n  |> filter(fn: (r) => r[\"project_key\"] == \"${project_key}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"timespent\")\n  |> group(columns: [\"project_key\"], mode:\"by\")\n  |> sum(column: \"_value\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Workload / Project",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "dark-blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 8,
+        "y": 16
+      },
+      "id": 16,
+      "options": {
+        "displayMode": "basic",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true
+      },
+      "pluginVersion": "9.0.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket: \"jira\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"jira\")\n  |> filter(fn: (r) => r[\"board_id\"] == \"${board_id}\")\n  |> filter(fn: (r) => r[\"sprint_id\"] == \"${sprint_id}\")\n  |> filter(fn: (r) => r[\"project_key\"] == \"${project_key}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"status\")\n  |> group(columns: [\"project_key\"], mode:\"by\")\n  |> count(column: \"_value\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Task / Project",
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {
+            "keepLabels": [
+              "assignee"
+            ],
+            "valueLabel": "assignee"
+          }
+        }
+      ],
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "dark-blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "h"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "_value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Unassigned"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 16,
+        "y": 16
+      },
+      "id": 17,
+      "options": {
+        "displayMode": "basic",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true
+      },
+      "pluginVersion": "9.0.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket: \"jira\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"jira\")\n  |> filter(fn: (r) => r[\"board_id\"] == \"${board_id}\")\n  |> filter(fn: (r) => r[\"sprint_id\"] == \"${sprint_id}\")\n  |> filter(fn: (r) => r[\"project_key\"] == \"${project_key}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"worklog\")\n  |> group(columns: [\"project_key\"], mode:\"by\")\n  |> sum(column: \"_value\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Worklog / Project",
       "transformations": [
         {
           "id": "labelsToFields",
@@ -711,6 +934,7 @@
       "type": "bargauge"
     }
   ],
+  "refresh": "",
   "schemaVersion": 36,
   "style": "dark",
   "tags": [],
@@ -755,6 +979,26 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_INFLUXDB}"
+        },
+        "definition": "from(bucket: \"jira\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn:(r) => r._measurement == \"jira\")\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> group()\n  |> distinct(column: \"project_key\")",
+        "hide": 0,
+        "includeAll": false,
+        "label": "project_key",
+        "multi": false,
+        "name": "project_key",
+        "options": [],
+        "query": "from(bucket: \"jira\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn:(r) => r._measurement == \"jira\")\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> group()\n  |> distinct(column: \"project_key\")",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
@@ -764,8 +1008,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Jira Summary",
+  "title": "Jira Sprint Summary",
   "uid": "2d-Z_704k",
-  "version": 9,
+  "version": 21,
   "weekStart": ""
 }
