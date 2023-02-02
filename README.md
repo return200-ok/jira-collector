@@ -11,7 +11,7 @@ docker run -d \
 -eINFLUX_TOKEN="KlXfBqa0uSGs0icfE-3g8FsQAoC9..." \
 -eINFLUX_DB="http://192.168.3.101:8086" \
 -eINFLUX_ORG="org" \
--eBUCKET_NAME="jenkins_test" \
+-eBUCKET_NAME="jira" \
 return200/jira-influx-collector:0.1
 ```
 
