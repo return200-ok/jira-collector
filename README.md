@@ -62,3 +62,5 @@ Or you can import dashboard from [18021] (https://grafana.com/grafana/dashboards
 
 The `Jira Sprint Summary Dashboard` dashboard presents sprint summary from Jira. See an image of the dasboard with data below.
 ![overview!](https://github.com/return200-ok/jira-crawler/blob/main/assets/Jira_Sprint_Summary_Dashboard.png?raw=true)
+
+
