@@ -64,6 +64,3 @@ The `Jira Sprint Summary Dashboard` dashboard presents sprint summary from Jira.
 ![overview!](https://github.com/return200-ok/jira-crawler/blob/main/assets/Jira_Sprint_Summary_Dashboard.png?raw=true)
 
 
-
-
-
